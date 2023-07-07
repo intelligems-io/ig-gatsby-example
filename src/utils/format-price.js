@@ -26,3 +26,5 @@ export const getCurrencySymbol = (currency, locale = undefined) => {
   const symbolAtEnd = formatted.endsWith(symbol)
   return { symbol, symbolAtEnd }
 }
+
+export const formatIgPrice = (price, currency) => formatPrice(currency, price)

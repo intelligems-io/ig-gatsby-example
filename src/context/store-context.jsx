@@ -1,6 +1,7 @@
 import * as React from "react"
 import fetch from "isomorphic-fetch"
 import Client from "shopify-buy"
+import { useIgCheckout } from "@intelligems/headless/gatsby"
 
 const client = Client.buildClient(
   {
@@ -34,6 +35,8 @@ export const StoreProvider = ({ children }) => {
   const [checkout, setCheckout] = React.useState(defaultValues.checkout)
   const [loading, setLoading] = React.useState(false)
   const [didJustAddToCart, setDidJustAddToCart] = React.useState(false)
+
+  const igCheckout = useIgCheckout(checkout.id)
 
   const setCheckoutItem = (checkout) => {
     if (isBrowser) {
@@ -79,7 +82,12 @@ export const StoreProvider = ({ children }) => {
       {
         variantId,
         quantity: parseInt(quantity, 10),
-      },
+        customAttributes: igCheckout.wrapCustomAttributes({
+          productId: "",
+          variantId: variantId,
+          customAttributes: []
+        })
+      }
     ]
 
     return client.checkout

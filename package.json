@@ -20,6 +20,7 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@intelligems/headless": "0.1.1",
     "@sindresorhus/slugify": "^1.1.0",
     "debounce": "^1.2.1",
     "dotenv": "^10.0.0",

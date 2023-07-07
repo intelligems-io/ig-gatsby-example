@@ -2,7 +2,7 @@ import * as React from "react"
 import { graphql, Link } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { getShopifyImage } from "gatsby-source-shopify"
-import { formatPrice } from "../utils/format-price"
+import { formatIgPrice } from "../utils/format-price"
 import {
   productCardStyle,
   productHeadingStyle,
@@ -11,6 +11,7 @@ import {
   productVendorStyle,
   productPrice,
 } from "./product-card.module.css"
+import { IgPrice } from "@intelligems/headless/gatsby"
 
 export function ProductCard({ product, eager }) {
   const {
@@ -21,11 +22,6 @@ export function ProductCard({ product, eager }) {
     vendor,
     storefrontImages,
   } = product
-
-  const price = formatPrice(
-    priceRangeV2.minVariantPrice.currencyCode,
-    priceRangeV2.minVariantPrice.amount
-  )
 
   const defaultImageHeight = 200
   const defaultImageWidth = 200
@@ -70,7 +66,7 @@ export function ProductCard({ product, eager }) {
         <h2 as="h2" className={productHeadingStyle}>
           {title}
         </h2>
-        <div className={productPrice}>{price}</div>
+        <IgPrice  className={productPrice} originalPrice={priceRangeV2.minVariantPrice.amount} productId={product.shopifyId} priceFormatter={formatIgPrice}/>
       </div>
     </Link>
   )
@@ -79,6 +75,7 @@ export function ProductCard({ product, eager }) {
 export const query = graphql`
   fragment ProductCard on ShopifyProduct {
     id
+    shopifyId
     title
     slug: gatsbyPath(
       filePath: "/products/{ShopifyProduct.productType}/{ShopifyProduct.handle}"
